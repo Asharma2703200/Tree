@@ -1,0 +1,16 @@
+class Solution {
+    public final TreeNode getTargetCopy(final TreeNode original, final TreeNode cloned, final TreeNode target) {
+        HashMap<TreeNode , TreeNode> map = new HashMap<>();
+        traversal(original , cloned , map);
+        return map.get(target);
+    }
+    void traversal(TreeNode original , TreeNode cloned , HashMap<TreeNode , TreeNode> map){
+        if(original == null || cloned == null){
+            return;
+        }
+         
+        map.put(original , cloned);
+        traversal(original.left , cloned.left , map);
+        traversal(original.right , cloned.right , map);
+    }
+}
