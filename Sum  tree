@@ -1,0 +1,36 @@
+class Solution
+{
+	boolean isSumTree(Node root)
+	{
+             // Your code here
+           int val = root.data;
+            int sl = suml(root.left);
+            int sr = sumr(root.right);
+            return val == sl + sr;
+    }
+    public int suml(Node node){
+        if(node == null){
+            return 0;
+        }
+        
+        int l = suml(node.left);
+        int r = suml(node.right);
+        
+        int ts = l + r + node.data;
+        
+        return ts;
+    }
+     public int sumr(Node node){
+        if(node == null){
+            return 0;
+        }
+        
+        int l = sumr(node.left);
+        int r = sumr(node.right);
+        
+        int ts = l + r + node.data;
+        
+        return ts;
+    }
+}
+
