@@ -1,0 +1,30 @@
+  public static ArrayList<Integer> morrisInTraversal(TreeNode node) {
+    ArrayList<Integer> result = new ArrayList<Integer>();
+    
+    TreeNode cur = node;
+    while(cur != null){
+        
+        if(cur.left == null){
+            result.add(cur.val);
+            cur = cur.right;
+        }else{
+            TreeNode rmn = cur.left;
+            while(rmn.right != null && rmn.right != cur){
+                rmn = rmn.right;
+            }
+            
+            
+            if(rmn.right == null){
+                rmn.right = cur;
+                cur= cur.left;
+            }else{
+                rmn.right = null;
+                result.add(cur.val);
+                cur = cur.right;
+            }
+        }
+    }
+   
+    
+    return result;
+  }
