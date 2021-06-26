@@ -1,0 +1,126 @@
+
+Approach: To solve the given problem, the idea is to traverse the tree using DFS Traversal and a concept of backtracking will be used. Follow the below steps to solve the problem:
+
+Traverse the given tree using DFS Traversal and perform the following steps:
+If the root node is NULL, then return.
+If the leaf node value is even, then remove this node by returning NULL. Otherwise, return the root node from the current recursive call.
+Recursively update the left and the right subtrees using the above conditions.
+After completing the above steps, print the updated tree using the level order Traversal with NULL in place of removed nodes.
+Below is the implementation of the above approach:
+
+
+
+
+
+// Java program for the above approach
+import java.util.*;
+class GFG
+{
+ 
+// Node of the tree
+static class node
+{
+    int data;
+    node left, right;
+};
+ 
+// Function to create a new node
+static node newNode(int key)
+{
+    node temp = new node();
+    temp.data = key;
+    temp.left = temp.right = null;
+    return (temp);
+}
+ 
+// Function to print tree level wise
+static void printLevelOrder(node root)
+{
+   
+    // Base Case
+    if (root==null)
+        return;
+ 
+    // Create an empty queue for
+    // level order traversal
+    Queue<node> q = new LinkedList<>();
+ 
+    // Enqueue Root
+    q.add(root);
+    while (!q.isEmpty())
+    {
+ 
+        // Print front of queue and
+        // remove it from queue
+        node temp = q.peek();
+        System.out.print(temp.data+ " ");
+        q.remove();
+ 
+        // If left child is present
+        if (temp.left != null)
+        {
+            q.add(temp.left);
+        }
+ 
+        // Otherwise
+        else if (temp.right != null)
+        {
+            System.out.print("null ");
+        }
+ 
+        // If right child is present
+        if (temp.right != null)
+        {
+            q.add(temp.right);
+        }
+ 
+        // Otherwise
+        else if (temp.left != null)
+        {
+            System.out.print("null ");
+        }
+    }
+}
+ 
+// Function to remove subtrees
+static node pruneTree(node root)
+{
+    // Base Case
+    if (root == null)
+    {
+        return null;
+    }
+ 
+    // Search for required condition
+    // in left and right half
+    root.left = pruneTree(root.left);
+    root.right = pruneTree(root.right);
+ 
+    // If the node is even
+    // and leaf node
+    if (root.data % 2 == 0
+        && root.right==null
+        && root.left==null)
+        return null;
+ 
+    return root;
+}
+ 
+// Driver Code
+public static void main(String[] args)
+{
+    node root = newNode(1);
+    root.left = newNode(2);
+    root.left.left = newNode(8);
+    root.left.right = newNode(10);
+    root.right = newNode(7);
+    root.right.left = newNode(12);
+    root.right.right = newNode(5);
+ 
+    // Function Call
+    node newRoot = pruneTree(root);
+ 
+    // Print answer
+    printLevelOrder(newRoot);
+}
+}
