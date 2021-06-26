@@ -1,0 +1,267 @@
+iven a binary tree containing n nodes. The problem is to count subtrees having total node’s data sum equal to a given value using only single recursive functions.
+
+Examples: 
+
+Input : 
+             5
+           /   \  
+        -10     3
+        /  \   /  \
+       9    8 -4   7
+       
+       x = 7
+
+Output : 2
+There are 2 subtrees with sum 7.
+
+1st one is leaf node:
+7.
+
+2nd one is:
+
+      -10
+     /   \
+    9     8
+Source: Microsoft Interview Experience | Set 157.
+
+Recommended: Please solve it on PRACTICE first, before moving on to the solution.
+Approach: 
+
+countSubtreesWithSumX(root, count, x)
+    if !root then
+        return 0
+        
+    ls = countSubtreesWithSumX(root->left, count, x)
+    rs = countSubtreesWithSumX(root->right, count, x)
+    sum = ls + rs + root->data
+    
+    if sum == x then
+    count++
+    return sum
+
+countSubtreesWithSumXUtil(root, x)
+    if !root then
+        return 0
+    
+    Initialize count = 0
+    ls = countSubtreesWithSumX(root->left, count, x)
+    rs = countSubtreesWithSumX(root->right, count, x)
+    
+    if (ls + rs + root->data) == x
+        count++
+    return count
+
+// Java program to find if
+// there is a subtree with
+// given sum
+import java.util.*;
+class GFG
+{
+ 
+// structure of a node
+// of binary tree
+static class Node
+{
+    int data;
+    Node left, right;
+}
+ 
+static class INT
+{
+    int v;
+    INT(int a)
+    {
+        v = a;
+    }
+}
+ 
+// function to get a new node
+static Node getNode(int data)
+{
+    // allocate space
+    Node newNode = new Node();
+ 
+    // put in the data
+    newNode.data = data;
+    newNode.left = newNode.right = null;
+    return newNode;
+}
+ 
+// function to count subtress that
+// sum up to a given value x
+static int countSubtreesWithSumX(Node root,
+                          INT count, int x)
+{
+    // if tree is empty
+    if (root == null)
+        return 0;
+ 
+    // sum of nodes in the left subtree
+    int ls = countSubtreesWithSumX(root.left,
+                                   count, x);
+ 
+    // sum of nodes in the right subtree
+    int rs = countSubtreesWithSumX(root.right,
+                                   count, x);
+ 
+    // sum of nodes in the subtree
+    // rooted with 'root.data'
+    int sum = ls + rs + root.data;
+ 
+    // if true
+    if (sum == x)
+        count.v++;
+ 
+    // return subtree's nodes sum
+    return sum;
+}
+ 
+// utility function to
+// count subtress that
+// sum up to a given value x
+static int countSubtreesWithSumXUtil(Node root,
+                                     int x)
+{
+    // if tree is empty
+    if (root == null)
+        return 0;
+ 
+    INT count = new INT(0);
+ 
+    // sum of nodes in the left subtree
+    int ls = countSubtreesWithSumX(root.left,
+                                   count, x);
+ 
+    // sum of nodes in the right subtree
+    int rs = countSubtreesWithSumX(root.right,
+                                   count, x);
+ 
+    // if tree's nodes sum == x
+    if ((ls + rs + root.data) == x)
+        count.v++;
+ 
+    // required count of subtrees
+    return count.v;
+}
+ 
+// Driver Code
+public static void main(String args[])
+{
+    /* binary tree creation    
+                5
+            / \
+        -10     3
+        / \ / \
+        9 8 -4 7
+    */
+    Node root = getNode(5);
+    root.left = getNode(-10);
+    root.right = getNode(3);
+    root.left.left = getNode(9);
+    root.left.right = getNode(8);
+    root.right.left = getNode(-4);
+    root.right.right = getNode(7);
+ 
+    int x = 7;
+ 
+    System.out.println("Count = " +
+           countSubtreesWithSumXUtil(root, x));
+}
+}
+ 
+// This code is contributed
+// by Arnab Kundu
+Output: 
+
+
+
+
+Count = 2
+Time Complexity: O(n).
+
+Another Approach: 
+
+countSubtreesWithSumXUtil(root, x)
+
+ Initialize static count = 0
+ Initialize static *ptr = root
+    if !root then
+        return 0
+    
+    Initialize static count = 0
+    ls+ = countSubtreesWithSumXUtil(root->left, count, x)
+    rs+ = countSubtreesWithSumXUtil(root->right, count, x)
+    
+    if (ls + rs + root->data) == x
+        count++
+    
+    if(ptr!=root)
+       return ls + root->data + rs
+    else
+    return count
+
+// Java program to find if
+// there is a subtree with
+// given sum
+import java.io.*;
+ 
+// Node class to create new node
+class Node
+{
+    int data;
+    Node left;
+    Node right;
+    Node(int data)
+    {
+        this.data = data;
+    }
+}
+ 
+class GFG
+{
+    static int count = 0;
+    static Node ptr;
+     
+    // Utility function to count subtress that
+    // sum up to a given value x
+    int countSubtreesWithSumXUtil(Node root, int x)
+    {
+        int l = 0, r = 0;
+        if(root == null) return 0;
+        l += countSubtreesWithSumXUtil(root.left, x);
+        r += countSubtreesWithSumXUtil(root.right, x);
+        if(l + r + root.data == x) count++;
+        if(ptr != root) return l + root.data + r;
+        return count;
+    }
+ 
+    // Driver Code
+    public static void main(String[] args)
+    {
+        /* binary tree creation
+            5
+        / \
+        -10 3
+        / \ / \
+        9 8 -4 7
+        */
+        Node root = new Node(5);
+        root.left = new Node(-10);
+        root.right = new Node(3);
+        root.left.left = new Node(9);
+        root.left.right = new Node(8);
+        root.right.left = new Node(-4);
+        root.right.right = new Node(7);
+        int x = 7;
+        ptr = root; // assigning global value of ptr
+        System.out.println("Count = " +
+               new GFG().countSubtreesWithSumXUtil(root, x));
+    }
+}
+ 
+// This code is submitted by Devarshi_Singh
+Output: 
+
+Count = 2
+Time Complexity: O(n).
+
