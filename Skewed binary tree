@@ -1,0 +1,87 @@
+1. Left Skewed Binary Tree:
+These are those skewed binary trees in which all the nodes are having a left child or no child at all. It is a left side dominated tree. All the right children remain as null.
+
+Below is an example of a left-skewed tree:
+
+// Java implementation of above approach
+import java.util.*;
+  
+class Main
+{
+      
+// A Tree node
+static class Node 
+{
+    int key;
+     Node left, right;
+};
+    
+// Utility function to create a new node
+static Node newNode(int key)
+{
+    Node temp = new Node();
+    temp.key = key;
+    temp.left = temp.right = null;
+    
+    return (temp);
+}
+    
+// Driver code
+public static void main(String args[])
+{
+    /*
+            1
+           /
+          2
+         /
+        3
+    */
+    Node root = newNode(1);
+    root.left = newNode(2);
+    root.left.left = newNode(3);
+}
+}
+
+
+
+2. Right Skewed Binary Tree:
+These are those skewed binary trees in which all the nodes are having a right child or no child at all. It is a right side dominated tree. All the left children remain as null.
+Below is an example of a right-skewed tree:
+
+// Java implementation of above approach
+import java.util.*;
+class GFG
+{
+      
+// A Tree node
+static class Node
+{
+    int key;
+    Node left, right;
+};
+    
+// Utility function to create a new node
+static Node newNode(int key)
+{
+    Node temp = new Node();
+    temp.key = key;
+    temp.left = temp.right = null;
+    
+    return (temp);
+}
+    
+// Driver code
+public static void main(String args[])
+{
+    /*
+       1
+        \
+         2
+          \
+           3
+    */
+    Node root = newNode(1);
+    root.right = newNode(2);
+    root.right.right = newNode(3);
+}
+}
