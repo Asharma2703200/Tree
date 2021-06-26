@@ -26,30 +26,30 @@ public class Main{
                 return node.height;
         }
         
-        Node leftrotate(Node nodex){
-            Node y = nodex.right;
-            Node t2 = y.left;
-            
-            y.left = nodex;
-            nodex.right = t2;
-            
-            y.height = Math.max(height(y.left) , height(y.right)) + 1;
-            nodex.height = Math.max(height(nodex.left) , height(nodex.right)) + 1;
-            
-            return y;
+        Node leftrotate(Node x){
+            Node y = x.right; 
+            Node T2 = y.left; 
+  
+            y.left = x; 
+            x.right = T2; 
+  
+            x.height = max(height(x.left), height(x.right)) + 1; 
+            y.height = max(height(y.left), height(y.right)) + 1; 
+  
+            return y; 
         }
-        Node rightrotate(Node nodey){
-            Node x = nodey.left;
-            Node t2 = x.right;
+         Node rightRotate(Node y){ 
+            Node x = y.left; 
+            Node T2 = x.right; 
             
-            x.right = nodey;
-            nodey.left = t2;
-            
-            x.height = Math.max(height(x.left) , height(x.right)) + 1;
-            nodey.height = Math.max(height(nodey.left) , height(nodey.right)) + 1;
-            
-            return x;
-        }
+            x.right = y; 
+            y.left = T2; 
+   
+            y.height = max(height(y.left), height(y.right)) + 1; 
+            x.height = max(height(x.left), height(x.right)) + 1; 
+ 
+            return x; 
+        } 
         
         Node insert(Node node , int key){
             if(node == null){
@@ -87,6 +87,67 @@ public class Main{
             
             return node;
         }
+        
+        Node delete(Node node , int key){
+            if(node == null) return null;
+            
+            if(key < node.val){
+                node.left = delete(node.left , key);
+            }else if(key > node.val){
+                node.right = delete(node.right , key);
+            }else{
+                
+                if(node.left != null && node.right != null){
+                    Node minNode = min(node.left);
+                    node.val = minNode.val;
+                    node.right = delete(node.right , minNode.val);
+                }else if ((node.left == null) || (node.right == null)) {
+                    Node temp = null; 
+                if (temp == node.left) 
+                    temp = node.right; 
+                else
+                    temp = node.left; 
+ 
+                if (temp == null){ 
+                    temp = node;
+                    node = null;
+                } 
+                else
+                    node = temp;
+               }
+            }
+            
+            if(node == null) return node;
+            
+            node.height = Math.max(height(node.left) , height(node.right)) + 1;
+            
+            int balance = getBalance(node);
+            
+            if (balance > 1 && getBalance(node.left) >= 0) 
+                return rightrotate(node); 
+  
+            if (balance > 1 && getBalance(node.left) < 0) { 
+                node.left = leftrotate(node.left); 
+                return rightrotate(node); 
+            } 
+  
+            if (balance < -1 && getBalance(node.right) <= 0) 
+                return leftrotate(node); 
+  
+            if (balance < -1 && getBalance(node.right) > 0){ 
+                node.right = rightrotate(node.right); 
+                return leftrotate(node); 
+            } 
+            
+            return node;
+        }
+        Node min(Node node){
+            Node current = node; 
+            while (current.left != null) 
+               current = current.left; 
+  
+            return current; 
+        }        
         void preOrder(Node node){
             if(node != null){
                 System.out.print(node.val + " ");
