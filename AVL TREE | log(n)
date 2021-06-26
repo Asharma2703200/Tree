@@ -1,0 +1,115 @@
+import java.util.*;
+import java.io.*;
+public class Main{
+    static class Node{
+        int val;
+        int height;
+        Node left;
+        Node right;
+        Node(int val){
+            this.val = val;
+            this.height = 1;
+            this.left = null;
+            this.right = null;
+        }
+    }
+    static class AVLTree{
+        Node root;
+        
+        int getBalance(Node node){
+            if(node == null) return 0;
+                return height(node.left) - height(node.right);
+        }
+        
+        int height(Node node){
+            if(node == null) return 0;
+                return node.height;
+        }
+        
+        Node leftrotate(Node nodex){
+            Node y = nodex.right;
+            Node t2 = y.left;
+            
+            y.left = nodex;
+            nodex.right = t2;
+            
+            y.height = Math.max(height(y.left) , height(y.right)) + 1;
+            nodex.height = Math.max(height(nodex.left) , height(nodex.right)) + 1;
+            
+            return y;
+        }
+        Node rightrotate(Node nodey){
+            Node x = nodey.left;
+            Node t2 = x.right;
+            
+            x.right = nodey;
+            nodey.left = t2;
+            
+            x.height = Math.max(height(x.left) , height(x.right)) + 1;
+            nodey.height = Math.max(height(nodey.left) , height(nodey.right)) + 1;
+            
+            return x;
+        }
+        
+        Node insert(Node node , int key){
+            if(node == null){
+                return new Node(key);
+            }
+            if(key < node.val){
+                node.left = insert(node.left , key);
+            }else if(key > node.val){
+                node.right = insert(node.right , key);
+            }else{
+                return node;  
+            }
+            
+            node.height = Math.max(height(node.left) , height(node.right)) + 1;
+            
+            int balance = getBalance(node);
+            
+            if(balance > 1 && key < node.left.val){
+                return rightrotate(node);
+            }
+            
+            if(balance < -1 && key > node.right.val){
+                return leftrotate(node);
+            }
+            
+            if(balance > 1 && key > node.left.val){
+                node.left = leftrotate(node.left);
+                return rightrotate(node);
+            }
+            
+            if(balance < -1 && key < node.right.val){
+                node.right = rightrotate(node.right);
+                return leftrotate(node);
+            }
+            
+            return node;
+        }
+        void preOrder(Node node){
+            if(node != null){
+                System.out.print(node.val + " ");
+                preOrder(node.left);
+                preOrder(node.right);
+            }
+        }
+    }
+    public static void main(String[] args) throws Exception {
+         AVLTree tree = new AVLTree();
+
+        tree.root = tree.insert(tree.root, 9); 
+        tree.root = tree.insert(tree.root, 5); 
+        tree.root = tree.insert(tree.root, 10); 
+        tree.root = tree.insert(tree.root, 0); 
+        tree.root = tree.insert(tree.root, 6); 
+        tree.root = tree.insert(tree.root, 11); 
+        tree.root = tree.insert(tree.root, -1); 
+        tree.root = tree.insert(tree.root, 1); 
+        tree.root = tree.insert(tree.root, 2); 
+        
+        System.out.println("Preorder traversal" + " of constructed tree is : ");
+        
+        tree.preOrder(tree.root);
+    }
+}
